@@ -1,21 +1,51 @@
 {
-    "projects": [],
-    "categories": [
-        {
-            "id": 1,
-            "name": "Infraestrutura"
-        },
-        {
-            "id": 2,
-            "name": "Desenvolvimento"
-        },
-        {
-            "id": 3,
-            "name": "Design"
-        },
-        {
-            "id": 4,
-            "name": "Planejamento"
-        }
-    ]
+  "projects": [
+    {
+      "id": "81d6",
+      "name": "FinOps",
+      "budget": "10000",
+      "cost": 0,
+      "services": []
+    },
+    {
+      "id": "a62f",
+      "name": "CamilOps",
+      "budget": "10000",
+      "cost": 0,
+      "services": [],
+      "category": {
+        "id": "3",
+        "name": "Design"
+      }
+    },
+    {
+      "id": "514f",
+      "name": "TADS1",
+      "budget": 3456,
+      "category": {
+        "id": "2",
+        "name": "Desenvolvimento"
+      },
+      "cost": 0,
+      "services": []
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Infraestrutura"
+    },
+    {
+      "id": "2",
+      "name": "Desenvolvimento"
+    },
+    {
+      "id": "3",
+      "name": "Design"
+    },
+    {
+      "id": "4",
+      "name": "Planejamento"
+    }
+  ]
 }

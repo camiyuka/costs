@@ -5,9 +5,10 @@ import Input from "../form/Input";
 import Select from "../form/Select";
 import SubmitButton from "../form/SubmitButton";
 
-function ProjectForm({btnText}) {
+function ProjectForm({handleSubmit, btnText, projectData}) {
 
   const [categories, setCategories]= useState([])
+  const [project, setProject]= useState(projectData || {}) //projectData que recebe do componente pai ou vazio
   
   useEffect(() => { 
     fetch("http://localhost:5000/categories", {
@@ -23,25 +24,54 @@ function ProjectForm({btnText}) {
       .catch((err)=> console.log(err))
   }, []) // valor inicial do options como vazio
 
+  const submit = (e) =>{
+    e.preventDefault()
+    handleSubmit(project)
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setProject({
+      ...project,
+      [name]: name === "budget" ? Number(value) : value,
+    });
+  }
+  
+
+  function handleCategory(e){ 
+    setProject({...project,
+      category: {
+      id: e.target.value,
+      name: e.target.options[e.target.selectedIndex].text,
+      },
+    })
+  }
+
   return (
-    <form className={styles.form}>
+    <form onSubmit={submit} className={styles.form}>
       <Input
         type="text"
         text="Nome do Projeto:"
         name="name"
         placeholder="Insira o nome do projeto"
+        handleOnChange={handleChange}
+        value={project.name ? project.name : ''}
       />
       <Input
         type="number"
         text="Orçamento:"
         name="budget"
         placeholder="Insira o orçamento total"
+        handleOnChange={handleChange}
+        value={project.budget ? project.budget: ''}
       />
 
       <Select
       text="Selecione a categoria:"
       name='category_id'
       options={categories}
+      handleOnChange={handleCategory}
+      value={project.category ? project.category.id : ''}
 
       />
 

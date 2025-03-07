@@ -8,14 +8,20 @@
     border-radius: 5px;
 }
 
-.success{
-color: #155724;
-background-color: #D4EDDA;
-border-color: #C3E6CB;
+.basic{
+color: #000000;
+background-color: #d1d1d1;
+border-color: #535353;
 }
 
 .error{
-    color: #721C24;
-    background-color: #F8D7DA;
-    border-color: #f5c6cB;
+color: #721C24;
+background-color: #F8D7DA;
+border-color: #f5c6cB;
 }
+
+.success{
+    color: #155724;
+    background-color: #D4EDDA;
+    border-color: #C3E6CB;
+    }

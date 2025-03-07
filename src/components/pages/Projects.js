@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom" 
+import { useLocation, useNavigate  } from "react-router-dom" 
 import { useState, useEffect } from "react" 
 
 import styles from './Projects.module.css'
@@ -12,13 +12,26 @@ function Project(){
 
     const [projects, setProjects]= useState([])
     const [removeLoading, setRemoveLoading]=useState(false)
+    const [projectMessage, setProjectMessage]=useState("")
+    const [message, setMessage] = useState("");
 
-    const location = useLocation()
-    let message=''
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    if(location.state){
-        message= location.state.message
-    }
+    useEffect(() => {
+        if (location.state?.message) {
+            setMessage(location.state.message);
+
+            navigate(location.pathname, { replace: true });
+
+            const timer = setTimeout(() => {
+                setMessage("");
+            }, 1000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [location, navigate]);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -35,10 +48,25 @@ function Project(){
                 setRemoveLoading(true);
             })
             .catch(err => console.error("Erro ao buscar os projetos:", err));
-        }, 1000);
+        }, 500);
 
         return () => clearTimeout(timer);
     }, []);
+
+    function removeProject(id){
+
+        fetch(`http://localhost:5000/projects/${id}`,{
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(resp => resp.json())
+        .then(() => {
+            setProjects(projects.filter((project)=> project.id !==id))
+            setProjectMessage('Projeto excluído com sucesso!')
+        })
+        .catch(err=> console.log(err))
+    }
 
 
     return(
@@ -47,7 +75,9 @@ function Project(){
                 <h1>Meus Projetos</h1>
                 <LinkButton to='/newproject' text='Criar Projeto'/>
             </div>
-            {message && <Message type='success' msg={message}/>}
+           
+                {message && <Message type='success' msg={message}/>}
+            {projectMessage && <Message type='basic' msg={projectMessage}/>}
             <Container customClass='start'>
             {projects.length > 0 &&
                 projects.map((project)=> (
@@ -57,6 +87,7 @@ function Project(){
                     budget={project.budget}
                     category={project?.category?.name}
                     key={project.id}
+                    handleRemove={removeProject}
                     />
                  ))}
                  {!removeLoading && <Loading/>}
@@ -65,6 +96,7 @@ function Project(){
                     )           
                  }
             </Container>
+            
         </div>
     )
 }
